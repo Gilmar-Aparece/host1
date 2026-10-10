@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#abc6f6">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BoholwebTechno – Website Design, Development and Hosting</title>
+<meta name="description" content="Website design, development and hosting for businesses in Bohol and beyond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
+<script>
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!window.gsap || !window.CustomEase) return;   /* CDN blocked: page stays static, nothing hidden */
+
+  var root = document.documentElement;
+  root.classList.add('anim');
+  gsap.registerPlugin(CustomEase);
+  CustomEase.create('reveal', '.16,1,.3,1');
+  CustomEase.create('soft',   '.25,.8,.3,1');
+
+  var started = false, bootTimer;
+  var ALL = '.kicker,.ln-i,.logo,.nav-links a,.nav-actions .btn,.burger,.sub,.ctas .btn';
+
+  function clean(){
+    gsap.set(ALL, {clearProps:'all'});
+    root.classList.remove('anim');
+  }
+
+  function start(){
+    if (started) return;
+    started = true;
+    clearTimeout(bootTimer);
+
+    // read --u in px so the GSAP offsets scale exactly like the CSS ones
+    var probe = document.createElement('div');
+    probe.style.cssText = 'position:absolute;visibility:hidden;width:calc(1 * var(--u))';
+    document.body.appendChild(probe);
+    var u = probe.getBoundingClientRect().width || 1;
+    probe.remove();
+
+    var mobile = window.matchMedia('(max-width:552px)').matches;
+    var q = gsap.utils.toArray;
+    var tl = gsap.timeline({onComplete: clean});
+
+    gsap.set('.ln-i', {yPercent:100, visibility:'visible'});
+
+    // A  masked line rise
+    tl.to('.ln:nth-child(1) .ln-i', {yPercent:0, duration: mobile ? .92 : 1.05, ease:'reveal'}, .12);
+    tl.to('.ln:nth-child(2) .ln-i', {yPercent:0, duration: mobile ? .92 : 1.05, ease:'reveal'}, .22);
+
+    tl.fromTo('.kicker', {opacity:0, y:9*u}, {opacity:1, y:0, duration:.55, ease:'soft'}, .30);
+
+    // D  quiet lift: logo (carries its -2.4u optical offset) + nav links
+    tl.fromTo('.logo',
+      {opacity:0, y:-2.4*u + 9*u},
+      {opacity:1, y:-2.4*u, duration:.62, ease:'soft'}, .46);
+    tl.fromTo(q('.nav-links a'),
+      {opacity:0, y:9*u},
+      {opacity:1, y:0, duration:.55, ease:'soft', stagger:.045}, .54);
+
+    // B  lift + focus: subtitle (no blur on mobile)
+    tl.fromTo('.sub',
+      {opacity:0, y:12*u},
+      {opacity:1, y:0, duration:.85, ease:'reveal'}, .58);
+
+    // C  settle: pills + CTAs
+    var from = {opacity:0, y:8*u, scale:.972};
+    tl.fromTo('.btn-login, .burger',   from, {opacity:1, y:0, scale:1, duration:.55, ease:'soft'},   .68);
+    tl.fromTo('.btn-nav-start',        from, {opacity:1, y:0, scale:1, duration:.55, ease:'soft'},   .73);
+    tl.fromTo('.ctas .btn-primary',    from, {opacity:1, y:0, scale:1, duration:.70, ease:'reveal'}, mobile ? .84 : .90);
+    tl.fromTo('.ctas .btn-ghost',      from, {opacity:1, y:0, scale:1, duration:.70, ease:'reveal'}, mobile ? .90 : .97);
+  }
+
+  function boot(){
+    bootTimer = setTimeout(start, 900);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(start, start);
+    else start();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+</head>
+<body>
+
+<main class="hero">
+  <div class="bg scene" aria-hidden="true">
+  <svg class="rings" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" fill="none">
+      <ellipse cx="800" cy="470" rx="600" ry="430" fill="#fff" fill-opacity=".08"/>
+      <g stroke="#fff" fill="none">
+        <ellipse cx="800" cy="450" rx="940" ry="330" transform="rotate(-14 800 450)" stroke-opacity=".55" stroke-width="1.5"/>
+        <ellipse cx="800" cy="450" rx="780" ry="300" transform="rotate(12 800 450)" stroke-opacity=".4" stroke-width="1.2"/>
+        <ellipse cx="800" cy="450" rx="1040" ry="480" transform="rotate(-4 800 450)" stroke-opacity=".3" stroke-width="1"/>
+      </g>
+      <g class="orbit-dots" fill="#fff" stroke="#6b77ea" stroke-width="2">
+        <circle cx="213" cy="236" r="7"/>
+        <circle cx="1526" cy="485" r="6"/>
+        <circle cx="1285" cy="685" r="7"/>
+        <circle cx="140" cy="640" r="6"/>
+      </g>
+    </svg>
+    <span class="glow glow-a"></span><span class="glow glow-b"></span>
+
+    <svg class="art cloud" viewBox="0 0 240 300" role="presentation">
+      <defs>
+        <linearGradient id="cg" gradientUnits="userSpaceOnUse" x1="50" y1="30" x2="190" y2="300">
+          <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#e3e9fe"/><stop offset="1" stop-color="#c2cef8"/>
+        </linearGradient>
+        <filter id="cs" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="7" dy="12" stdDeviation="9" flood-color="#4e5ece" flood-opacity=".34"/></filter>
+        <filter id="cglow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2.6"/></filter>
+      </defs>
+      <g filter="url(#cs)" fill="url(#cg)">
+        <circle cx="82" cy="98" r="34"/><circle cx="122" cy="76" r="44"/><circle cx="165" cy="100" r="36"/>
+        <rect x="52" y="96" width="150" height="40" rx="20"/>
+      </g>
+      <path d="M122 118V84M107 99l15-16 15 16" stroke="#5f6bea" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M122 140v28" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8"/>
+      <g filter="url(#cs)">
+        <g fill="url(#cg)" stroke="#fff" stroke-opacity=".9">
+          <rect x="62" y="172" width="120" height="32" rx="11"/>
+          <rect x="62" y="212" width="120" height="32" rx="11"/>
+          <rect x="62" y="252" width="120" height="32" rx="11"/>
+        </g>
+      </g>
+      <g fill="#b2bff0"><rect x="116" y="185" width="52" height="5" rx="2.5"/><rect x="116" y="225" width="52" height="5" rx="2.5"/><rect x="116" y="265" width="52" height="5" rx="2.5"/></g>
+      <g fill="#52cdee" filter="url(#cglow)" opacity=".9"><circle cx="82" cy="188" r="4.5"/><circle cx="82" cy="228" r="4.5"/><circle cx="82" cy="268" r="4.5"/></g>
+      <g fill="#52cdee"><circle cx="82" cy="188" r="3.4"/><circle cx="82" cy="228" r="3.4"/><circle cx="82" cy="268" r="3.4"/></g>
+      <g fill="#8d98ee"><circle cx="97" cy="188" r="3.4"/><circle cx="97" cy="228" r="3.4"/><circle cx="97" cy="268" r="3.4"/></g>
+    </svg>
+
+    <svg class="art robot" viewBox="0 0 220 290" role="presentation">
+      <defs>
+        <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#e1e8fe"/><stop offset="1" stop-color="#bfccf7"/>
+        </linearGradient>
+        <linearGradient id="rv" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#3a4b94"/><stop offset="1" stop-color="#232f6c"/>
+        </linearGradient>
+        <radialGradient id="rb" cx=".35" cy=".3" r=".8">
+          <stop offset="0" stop-color="#a9b4fa"/><stop offset="1" stop-color="#4f5bd8"/>
+        </radialGradient>
+        <filter id="rs" x="-30%" y="-20%" width="160%" height="150%"><feDropShadow dx="8" dy="13" stdDeviation="10" flood-color="#4e5ece" flood-opacity=".34"/></filter>
+        <filter id="rglow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.2"/></filter>
+      </defs>
+      <path d="M110 66V38" stroke="#b2bff0" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <circle cx="116" cy="38" r="9" fill="#4e5ece" opacity=".3" filter="url(#rglow)"/><circle cx="110" cy="30" r="10" fill="url(#rb)"/>
+      <g filter="url(#rs)" fill="url(#rg)" stroke="#fff" stroke-opacity=".9">
+        <rect x="20" y="106" width="26" height="54" rx="12"/>
+        <rect x="174" y="106" width="26" height="54" rx="12"/>
+        <rect x="94" y="176" width="32" height="20" rx="7"/>
+        <rect x="46" y="190" width="128" height="78" rx="34"/>
+        <rect x="36" y="62" width="148" height="118" rx="42"/>
+      </g>
+      <rect x="54" y="82" width="112" height="76" rx="28" fill="url(#rv)"/>
+      <path d="M70 92c10-5 28-6 42-6" stroke="#fff" stroke-opacity=".22" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <g fill="#52cdee" filter="url(#rglow)" opacity=".95"><rect x="78" y="106" width="19" height="26" rx="9.5"/><rect x="123" y="106" width="19" height="26" rx="9.5"/></g>
+      <g fill="#a6efff"><rect x="78" y="106" width="19" height="26" rx="9.5"/><rect x="123" y="106" width="19" height="26" rx="9.5"/></g>
+      <path d="M100 143q10 6 20 0" stroke="#52cdee" stroke-width="3" stroke-linecap="round" fill="none" opacity=".85"/>
+      <circle cx="110" cy="229" r="12" fill="#dfe6fd" stroke="#fff"/>
+      <circle cx="110" cy="229" r="6" fill="#52cdee" filter="url(#rglow)"/>
+      <circle cx="110" cy="229" r="4.4" fill="#a6efff"/>
+    </svg>
+
+    <svg class="art net" viewBox="0 0 200 150" role="presentation">
+      <defs>
+        <radialGradient id="ng" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#d9e1fd"/><stop offset="1" stop-color="#aebcf5"/></radialGradient>
+        <radialGradient id="na" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#a9b4fa"/><stop offset="1" stop-color="#4f5bd8"/></radialGradient>
+        <filter id="ns" x="-40%" y="-40%" width="190%" height="190%"><feDropShadow dx="5" dy="9" stdDeviation="6" flood-color="#4e5ece" flood-opacity=".32"/></filter>
+      </defs>
+      <g stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".9">
+        <path d="M38 104L92 44L158 86L112 124L38 104M92 44L112 124"/>
+      </g>
+      <g filter="url(#ns)">
+        <circle cx="38" cy="104" r="14" fill="url(#ng)"/>
+        <circle cx="92" cy="44" r="18" fill="url(#na)"/>
+        <circle cx="158" cy="86" r="13" fill="url(#ng)"/>
+        <circle cx="112" cy="124" r="11" fill="url(#ng)"/>
+      </g>
+    </svg>
+  </div>
+
+  <header class="nav">
+    <a class="logo" href="#">BoholwebTechno</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#products">Products</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#developers">Developers</a>
+      <a href="#resources">Resources</a>
+      <a href="https://boholwebtechno.com/contact/">Contact Sales</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-login" href="#">Login</a>
+      <a class="btn btn-nav-start" href="https://boholwebtechno.com/sign-up/">Get Started
+        <svg class="arw" viewBox="0 0 12 10" fill="none" aria-hidden="true"><path d="M0.8 5h10M7.1 1.4 10.9 5l-3.8 3.6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span></button>
+  </header>
+
+  <nav class="menu" id="menu" aria-label="Mobile">
+    <a href="#products">Products</a>
+    <a href="#solutions">Solutions</a>
+    <a href="#developers">Developers</a>
+    <a href="#resources">Resources</a>
+    <a href="https://boholwebtechno.com/contact/">Contact Sales</a>
+    <div class="divider"></div>
+    <a href="#">Login</a>
+    <a class="m-start" href="https://boholwebtechno.com/sign-up/">Get Started
+      <svg class="arw" viewBox="0 0 12 10" fill="none" aria-hidden="true"><path d="M0.8 5h10M7.1 1.4 10.9 5l-3.8 3.6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </nav>
+
+  <div class="hero-inner">
+    <p class="kicker">Web Design, Development, Web Hosting, SEO</p>
+    <h1><span class="ln"><span class="ln-i">Cloud platform</span></span>
+        <span class="ln"><span class="ln-i">for modern teams</span></span></h1>
+    <p class="sub">Simple, reliable hosting and developer tools to launch websites<br>
+      and applications in minutes &mdash; with the performance and<br>
+      security your business depends on.</p>
+    <div class="ctas">
+      <a class="btn btn-lg btn-primary" href="#products">Get started <svg class="arw" viewBox="0 0 12 10" fill="none" aria-hidden="true"><path d="M0.8 5h10M7.1 1.4 10.9 5l-3.8 3.6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="btn btn-lg btn-ghost" href="https://boholwebtechno.com/contact/">Talk to sales <svg class="arw" viewBox="0 0 12 10" fill="none" aria-hidden="true"><path d="M0.8 5h10M7.1 1.4 10.9 5l-3.8 3.6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </div>
+</main>
+
+<section class="sec strip"><div class="wrap">
+  <div class="stats" style="margin:0">
+    <div class="stat rv"><b>99.99%</b><span>Uptime target</span></div>
+    <div class="stat rv"><b>12</b><span>Global regions</span></div>
+    <div class="stat rv"><b>&lt; 60s</b><span>Average deploy time</span></div>
+    <div class="stat rv"><b>24/7</b><span>Expert support</span></div>
+  </div>
+</div></section>
+
+<section class="sec" id="products"><div class="wrap">
+  <span class="eyebrow rv">Products</span>
+  <h2 class="rv">Everything you need to build and run in the cloud</h2>
+  <p class="lead rv">A complete set of hosting, data and developer services &mdash; designed to work together and grow with your business.</p>
+  <div class="grid g3">
+    <article class="card rv"><span class="ico">&#9729;&#xFE0E;</span><h3>Cloud Hosting</h3><p>Scalable virtual servers with predictable pricing, SSD storage and instant provisioning.</p></article>
+    <article class="card rv"><span class="ico">&#9636;</span><h3>Managed Databases</h3><p>Fully managed PostgreSQL, MySQL and Redis with automated backups and failover.</p></article>
+    <article class="card rv"><span class="ico">&#9096;</span><h3>App Platform</h3><p>Push your code and deploy web apps and APIs without managing infrastructure.</p></article>
+    <article class="card rv"><span class="ico">&#11041;</span><h3>Object Storage</h3><p>Durable, S3-compatible storage with built-in CDN for files, media and backups.</p></article>
+    <article class="card rv"><span class="ico">&#8644;</span><h3>Networking</h3><p>Load balancers, private networks and firewalls to keep traffic fast and controlled.</p></article>
+    <article class="card rv"><span class="ico">&#128737;&#xFE0E;</span><h3>Security &amp; Monitoring</h3><p>Encryption, access controls and real-time alerts that protect every workload.</p></article>
+  </div>
+</div></section>
+
+<section class="sec" id="solutions"><div class="wrap">
+  <div class="sol-head">
+    <div><span class="eyebrow rv">Solutions</span><h2 class="rv" style="margin:0">Solutions for every team</h2></div>
+    <a class="btn btn-ghost btn-sm rv" href="https://boholwebtechno.com/solutions/">View all solutions</a>
+  </div>
+  <div class="sols rv">
+    <details class="sol" open>
+      <summary><span class="pm" aria-hidden="true">+</span>Startups &amp; small business</summary>
+      <div class="sol-body"><p>Launch your website or product quickly with simple tools, transparent pricing and room to scale as your customers grow.</p>
+      <a class="more" href="https://boholwebtechno.com/solutions/startups/">Learn more</a></div>
+    </details>
+    <details class="sol">
+      <summary><span class="pm" aria-hidden="true">+</span>Developers &amp; agencies</summary>
+      <div class="sol-body"><p>Automate deployments, manage client projects and ship reliable applications with APIs, CLI tools and team collaboration.</p>
+      <a class="more" href="https://boholwebtechno.com/solutions/developers/">Learn more</a></div>
+    </details>
+  </div>
+</div></section>
+
+<section class="sec" id="developers"><div class="wrap devx">
+  <div>
+    <span class="eyebrow rv">Developer experience</span>
+    <h2 class="rv">Build, deploy and scale &mdash; without the complexity</h2>
+    <p class="lead rv" style="margin-bottom:24px">Connect your repository, choose a region and go live. Built-in CI/CD, one-click rollbacks and clear usage metrics let your team focus on shipping features instead of managing servers.</p>
+    <ul class="ticks rv">
+      <li>Git-based deployments with automatic builds</li>
+      <li>Automatic HTTPS, backups and security updates</li>
+      <li>Horizontal scaling when traffic spikes</li>
+    </ul>
+    <a class="btn btn-primary btn-md rv" href="https://boholwebtechno.com/docs/">Read the documentation <svg class="arw" viewBox="0 0 12 10" fill="none" aria-hidden="true"><path d="M0.8 5h10M7.1 1.4 10.9 5l-3.8 3.6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+  <div class="term rv" role="img" aria-label="Terminal showing a deploy command finishing in 48 seconds">
+    <div class="term-bar"><i></i><i></i><i></i></div>
+<pre><span class="dim">$</span> bohol deploy --region sgp1
+
+<span class="ok">&#10004;</span> Building application&hellip;
+<span class="ok">&#10004;</span> Running tests (42 passed)
+<span class="ok">&#10004;</span> Provisioning HTTPS
+
+Live in 48s &rarr; <span class="url">https://your-app.example.com</span></pre>
+  </div>
+</div></section>
+
+<section class="sec" id="resources"><div class="wrap">
+  <span class="eyebrow rv">Resources</span>
+  <h2 class="rv">Resources &amp; latest updates</h2>
+  <p class="lead rv">Guides, release notes and tutorials to help you get the most out of the platform.</p>
+  <article class="card post rv">
+    <a class="av" href="https://boholwebtechno.com/hello-world" aria-hidden="true" tabindex="-1">H</a>
+    <h3><a href="https://boholwebtechno.com/hello-world">Hello world!</a></h3>
+    <a class="more" href="https://boholwebtechno.com/hello-world">Read more &rarr;</a>
+  </article>
+
+  <div id="docs" class="docs">
+    <span class="eyebrow rv">Documentation</span>
+    <h2 class="rv">Explore by topic</h2>
+    <p class="lead rv" style="margin-bottom:24px">Browse documentation, tutorials and case studies organised by category.</p>
+    <div class="chips rv">
+      <a class="chip" href="https://boholwebtechno.com/category/cat">cat</a>
+      <a class="chip" href="uncategorized.html">Uncategorized</a>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec cta-band"><div class="wrap">
+  <h2 class="rv">Ready to build something great?</h2>
+  <p class="lead rv" style="margin:0 auto 32px">Create your account and deploy your first project today &mdash; no credit card required to get started.</p>
+  <div class="cta-row rv">
+    <a class="btn btn-primary btn-md" href="https://boholwebtechno.com/sign-up/">Create free account <svg class="arw" viewBox="0 0 12 10" fill="none" aria-hidden="true"><path d="M0.8 5h10M7.1 1.4 10.9 5l-3.8 3.6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a class="btn btn-ghost btn-md" href="https://boholwebtechno.com/contact/">Contact sales <svg class="arw" viewBox="0 0 12 10" fill="none" aria-hidden="true"><path d="M0.8 5h10M7.1 1.4 10.9 5l-3.8 3.6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</div></section>
+
+<footer class="foot"><div class="wrap">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="flogo" href="https://boholwebtechno.com/">BoholwebTechno</a>
+      <p>Cloud hosting, developer tools and business solutions to build, deploy and scale with confidence.</p>
+      <div class="social">
+        <a href="https://github.com/">GitHub</a><a href="https://x.com/">X</a><a href="https://linkedin.com/">LinkedIn</a><a href="https://youtube.com/">YouTube</a>
+      </div>
+    </div>
+    <nav aria-label="Footer: Products"><h4>Products</h4>
+      <a href="https://boholwebtechno.com/">Cloud Hosting</a><a href="https://boholwebtechno.com/">Managed Databases</a><a href="https://boholwebtechno.com/">App Platform</a><a href="https://boholwebtechno.com/">Object Storage</a></nav>
+    <nav aria-label="Footer: Resources"><h4>Resources</h4>
+      <a href="https://boholwebtechno.com/">Documentation</a><a href="https://boholwebtechno.com/">Tutorials</a><a href="https://boholwebtechno.com/">API Reference</a><a href="https://boholwebtechno.com/">Community</a></nav>
+    <nav aria-label="Footer: Company"><h4>Company</h4>
+      <a href="https://boholwebtechno.com/">About</a><a href="https://boholwebtechno.com/">Careers</a><a href="https://boholwebtechno.com/contact/">Contact</a><a href="https://boholwebtechno.com/">Security</a></nav>
+  </div>
+  <div class="copy">&copy; 2026 BoholwebTechno.</div>
+</div></footer>
+
+
+<script>
+(function(){
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('menu');
+  if (!burger || !menu) return;
+  function set(open){
+    menu.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  burger.addEventListener('click', function(e){
+    e.stopPropagation();
+    set(!menu.classList.contains('open'));
+  });
+  menu.addEventListener('click', function(e){
+    if (e.target.closest('a')) set(false);
+  });
+  document.addEventListener('click', function(e){
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !burger.contains(e.target)) set(false);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && menu.classList.contains('open')){
+      set(false);
+      burger.focus();
+    }
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var items=document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)){items.forEach(function(e){e.classList.add('in')});}
+  else{
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){
+        var sib=Array.prototype.indexOf.call(e.target.parentNode.children,e.target);
+        e.target.style.transitionDelay=Math.min(sib,5)*60+'ms';
+        e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+    items.forEach(function(e){io.observe(e)});
+  }
+  var y=document.getElementById('yr'); if(y) y.textContent=new Date().getFullYear();
+  var f=document.getElementById('cform');
+  if(f) f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var d=new FormData(f);
+    if(!d.get('name')||!d.get('email')||!d.get('msg')){f.reportValidity&&f.reportValidity();return;}
+    var body='Name: '+d.get('name')+'\nEmail: '+d.get('email')+'\nService: '+d.get('service')+'\n\n'+d.get('msg');
+    location.href='mailto:hello@boholwebtechno.com?subject='+encodeURIComponent('Website inquiry: '+d.get('service'))+'&body='+encodeURIComponent(body);
+  });
+})();
+</script>
+<script>
+/* sticky header: add a backdrop once the page scrolls */
+(function(){
+  var nav=document.querySelector('.nav');
+  if(!nav) return;
+  function update(){nav.classList.toggle('is-scrolled',window.scrollY>24)}
+  update();
+  window.addEventListener('scroll',update,{passive:true});
+})();
+</script>
+</body>
+</html>
